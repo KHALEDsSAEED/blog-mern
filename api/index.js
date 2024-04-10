@@ -2,7 +2,11 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import userRoutes from './routes/user.route.js';
+import authRoutes from './routes/auth.route.js';
 
+const app = express();
+
+app.use(express.json()); // Parse JSON bodies
 
 dotenv.config(); // Load .env file
 
@@ -14,10 +18,12 @@ mongoose
         console.log('Error: ', error);
     });
 
-const app = express();
+
 
 app.listen(3000, () => {
     console.log('Server is running on port 3000 !');
 });
 
 app.use('/api/user', userRoutes); // Use the userRoutes for the '/api/user/test' endpoint
+
+app.use('/api/auth', authRoutes); // Use the authRoutes for the '/api/auth/signup' endpoint
