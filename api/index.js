@@ -2,10 +2,10 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
-dotenv.config();
+dotenv.config(); // Load .env file
 
 mongoose
-    .connect(process.env.MONGO)
+    .connect(process.env.MONGO) // Connect to MongoDB using a secure methode (password is hidden in .env file)
     .then(() => {
         console.log('Connected to MongoDB !');
     }).catch((error) => {
