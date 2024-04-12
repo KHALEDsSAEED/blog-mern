@@ -1,12 +1,15 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react'
+import { signInStart, signInFailure, signInSuccess } from '../redux/user/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 export default function Signin() {
     const [formData, setFormData] = useState({});
-    const [errorMessage, setErrorMessage] = useState(null);
-    const [loading, setLoading] = useState(false);
+    const { loading, error: errorMessage } = useSelector((state) => state.user);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleChange = (e) => {
         setFormData({
@@ -17,12 +20,11 @@ export default function Signin() {
     const handleSubmit = async (e) => {
         e.preventDefault(); // prevent the page from refreshing
         if (!formData.email || !formData.password) {
-            return setErrorMessage('Please fill in all fields!');
+            return dispatch(signInFailure('Please fill in all the fields'));
         }
 
         try {
-            setLoading(true);
-            setErrorMessage(null);
+            dispatch(signInStart());
             const res = await fetch('api/auth/signin', {
                 method: 'POST', // send data to the server
                 headers: {
@@ -32,16 +34,15 @@ export default function Signin() {
             });
             const data = await res.json(); // convert the response to json
             if (data.success === false) {
-                return setErrorMessage(data.message);
+                dispatch(signInFailure(data.message));
             }
-            setLoading(false);
             if (res.ok) {
+                dispatch(signInSuccess(data));
                 navigate('/');
             }
         }
         catch (err) {
-            setErrorMessage('Something went wrong, please try again!' + err.message);
-            setLoading(false);
+            dispatch(signInFailure(err.message));
         }
     }
 
