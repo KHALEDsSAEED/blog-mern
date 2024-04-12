@@ -3,8 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import userRoutes from './routes/user.route.js';
 import authRoutes from './routes/auth.route.js';
-import { stat } from 'fs';
-
+import path from 'path';
 const app = express();
 
 app.use(express.json()); // Parse JSON bodies
@@ -35,6 +34,6 @@ app.use((err, req, res, next) => {
     res.status(statusCode).json({
         sucess: false,
         statusCode,
-        message
+        message,
     });
 });

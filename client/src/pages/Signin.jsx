@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react'
 import { signInStart, signInFailure, signInSuccess } from '../redux/user/userSlice';
@@ -33,7 +33,7 @@ export default function Signin() {
                 body: JSON.stringify(formData) // convert the object to a string
             });
             const data = await res.json(); // convert the response to json
-            if (data.success === false) {
+            if (data.sucess === false) {
                 dispatch(signInFailure(data.message));
             }
             if (res.ok) {

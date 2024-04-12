@@ -32,7 +32,7 @@ export default function signup() {
                 body: JSON.stringify(formData) // convert the object to a string
             });
             const data = await res.json(); // convert the response to json
-            if (data.success === false) {
+            if (data.sucess === false) {
                 return setErrorMessage(data.message);
             }
             setLoading(false);

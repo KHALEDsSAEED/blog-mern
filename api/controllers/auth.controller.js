@@ -50,9 +50,6 @@ export const signin = async (req, res, next) => {
                 id: validUser._id // Add the user id to the token payload
             },
             process.env.JWT_SECRET, // Add the secret key to the token
-            {
-                expiresIn: '2h' // Set the token expiration time
-            }
         );
 
         const { password: pass, ...rest } = validUser._doc; // Remove the password from the user object
