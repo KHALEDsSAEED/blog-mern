@@ -4,7 +4,7 @@ import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react'
 import { signInStart, signInFailure, signInSuccess } from '../redux/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import OAuth from '../components/OAuth';
-
+import { getAuth, sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
 
 export default function Signin() {
     const [formData, setFormData] = useState({});
@@ -18,11 +18,44 @@ export default function Signin() {
             [e.target.id]: e.target.value.trim()
         });
     }
+
+    const resetPassword = async (e) => {
+        e.preventDefault();
+        try {
+            const auth = getAuth();
+            sendPasswordResetEmail(auth, formData.email)
+                .then(() => {
+                    // Password reset email sent!
+                    navigate('/sign-in');
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                });
+        }
+        catch (err) {
+            console.error(err);
+        }
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault(); // prevent the page from refreshing
         if (!formData.email || !formData.password) {
             return dispatch(signInFailure('Please fill in all the fields'));
         }
+
+        /*
+        const auth = getAuth();
+
+        // Sign in with email and password
+        const userCredential = await signInWithEmailAndPassword(auth, formData.email, formData.password);
+        const user = userCredential.user;
+
+        // Check if email is verified
+        if (!user.emailVerified) {
+            return dispatch(signInFailure('Please verify your email'));
+        }
+        */
 
         try {
             dispatch(signInStart());
@@ -86,7 +119,7 @@ export default function Signin() {
                                 onChange={handleChange}
                             />
                         </div>
-                        <Button gradientDuoTone='purpleToPink' type='submit' disabled={loading}>
+                        <Button gradientDuoTone='purpleToPink' className='hover:scale-105' type='submit' disabled={loading}>
                             {
                                 loading ? (
                                     <>
@@ -98,6 +131,11 @@ export default function Signin() {
                             }
                         </Button>
                         <OAuth />
+                        {/*
+                        <Button type='button' className="hover:scale-105" outline gradientDuoTone='pinkToOrange' onClick={resetPassword}>
+                            FORGET YOUR PASSWORD?
+                        </Button>
+                        */}
                     </form>
                     <div className="flex gap-2 text-sm mt-5">
                         <span>Dont have an account ?</span>

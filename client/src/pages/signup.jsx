@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react'
 import { set } from 'mongoose';
 import OAuth from '../components/OAuth';
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 
 export default function signup() {
     const [formData, setFormData] = useState({});
@@ -25,6 +26,17 @@ export default function signup() {
         try {
             setLoading(true);
             setErrorMessage(null);
+
+            /*
+            const auth = getAuth();
+            // Create user with email and password
+            const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+            const user = userCredential.user;
+            // Send email verification
+            await sendEmailVerification(user);
+            console.log('Email verification sent!');
+            */
+
             const res = await fetch('api/auth/signup', { // send the data to the server
                 method: 'POST', // send data to the server
                 headers: {
@@ -33,8 +45,13 @@ export default function signup() {
                 body: JSON.stringify(formData) // convert the object to a string
             });
             const data = await res.json(); // convert the response to json
-            if (data.sucess === false) {
-                return setErrorMessage(data.message);
+
+            // if (data.sucess === false) {
+            //     return setErrorMessage(data.message);
+            // }
+            
+            if (!res.ok) {
+                throw new Error(data.message);
             }
             setLoading(false);
             if (res.ok) {
@@ -42,7 +59,7 @@ export default function signup() {
             }
         }
         catch (err) {
-            setErrorMessage('Something went wrong, please try again!' + err.message);
+            setErrorMessage('Something went wrong! ' + err.message);
             setLoading(false);
         }
     }

@@ -13,18 +13,24 @@ export const signup = async (req, res, next) => {
 
     const hashedPassword = bcryptjs.hashSync(password, 10); // Hash the password befor save it in the database
 
-    const newUser = new User({ // Create a new user object
-        username,
-        email,
-        password: hashedPassword,
-    });
-
-    try {
-        await newUser.save(); // Save the user object in the database
-        res.json("User created successfully");
+    const user = await User.findOne({ email });
+    if (user) {
+        next(errorHandler(400, 'Email already exists.'));    
     }
-    catch (error) {
-        next(error);
+    else {
+        const newUser = new User({ // Create a new user object
+            username,
+            email,
+            password: hashedPassword,
+        });
+
+        try {
+            await newUser.save(); // Save the user object in the database
+            res.json("User created successfully");
+        }
+        catch (error) {
+            next(error);
+        }
     }
 };
 
