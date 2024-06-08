@@ -63,5 +63,47 @@ export const signin = async (req, res, next) => {
     catch (error) {
         next(error);
     }
+};
 
+export const google = async (req, res, next) => {
+    const { name, email, googlePhotoURL } = req.body;
+    try {
+        const user = await User.findOne({ email });
+        if (user) {
+            const token = jwt.sign( // Create a token
+                {
+                    id: user._id // Add the user id to the token payload
+                },
+                process.env.JWT_SECRET, // Add the secret key to the token
+            );
+            const { password, ...rest } = user._doc; // Remove the password from the user object
+            res.status(200).cookie('token', token, { // Send the token in a cookie
+                httpOnly: true,
+            }).json(rest);
+        }
+        else {
+            const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8); // Generate a random password
+            const hashedPassword = bcryptjs.hashSync(generatedPassword, 10); // Hash the password befor save it in the database
+            const newUser = new User({ // Create a new user object
+                username: name.toLowerCase().split(' ').join('') + Math.random().toString(9).slice(-4), // Generate a username
+                email,
+                password: hashedPassword,
+                profilePicture: googlePhotoURL,
+            });
+            await newUser.save(); // Save the user object in the database
+            const token = jwt.sign( // Create a token
+                {
+                    id: newUser._id // Add the user id to the token payload
+                },
+                process.env.JWT_SECRET, // Add the secret key to the token
+            );
+            const { password, ...rest } = newUser._doc; // Remove the password from the user object
+            res.status(200).cookie('token', token, { // Send the token in a cookie
+                httpOnly: true,
+            }).json(rest);
+        }
+    }
+    catch (error) {
+        next(error);
+    }
 };
