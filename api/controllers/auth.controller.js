@@ -13,14 +13,14 @@ export const signup = async (req, res, next) => {
 
     const hashedPassword = bcryptjs.hashSync(password, 10); // Hash the password befor save it in the database
 
-    const newUser = new User({
+    const newUser = new User({ // Create a new user object
         username,
         email,
         password: hashedPassword,
     });
 
     try {
-        await newUser.save();
+        await newUser.save(); // Save the user object in the database
         res.json("User created successfully");
     }
     catch (error) {
@@ -36,16 +36,16 @@ export const signin = async (req, res, next) => {
     }
 
     try {
-        const validUser = await User.findOne({ email });
-        if (!validUser) {
+        const validUser = await User.findOne({ email }); // Find the user by email
+        if (!validUser) { // If the user not found
             return next(errorHandler(404, 'User not found !'));
         }
-        const validPassword = bcryptjs.compareSync(password, validUser.password);
-        if (!validPassword) {
+        const validPassword = bcryptjs.compareSync(password, validUser.password); // Compare the password with the hashed password
+        if (!validPassword) { // If the password is invalid
             return next(errorHandler(400, 'Invalid password !'));
         }
 
-        const token = jwt.sign(
+        const token = jwt.sign( // Create a token
             {
                 id: validUser._id // Add the user id to the token payload
             },
@@ -54,7 +54,7 @@ export const signin = async (req, res, next) => {
 
         const { password: pass, ...rest } = validUser._doc; // Remove the password from the user object
 
-        res.status(200).cookie('token', token, {
+        res.status(200).cookie('token', token, { // Send the token in a cookie
             httpOnly: true,
         }).json(rest);
 
