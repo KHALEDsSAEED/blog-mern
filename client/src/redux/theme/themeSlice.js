@@ -1,14 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const getDefaultTheme = () => {
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        return 'dark';
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) { // if user's system theme is dark
+        return 'dark'; // return dark theme
     }
-    return 'light';
+    return 'light'; // otherwise return light theme
 };
 
 const initialState = {
-    theme: getDefaultTheme(),
+    theme: getDefaultTheme(), // get the default theme
 };
 
 const themeSlice = createSlice({
@@ -16,7 +16,7 @@ const themeSlice = createSlice({
     initialState,
     reducers: {
         toggleTheme: (state) => {
-            state.theme = state.theme === 'light' ? 'dark' : 'light';
+            state.theme = state.theme === 'light' ? 'dark' : 'light'; // toggle the theme
         },
     },
 });
