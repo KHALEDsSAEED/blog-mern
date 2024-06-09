@@ -11,11 +11,34 @@ export const signup = async (req, res, next) => {
         next(errorHandler(400, 'All fields are required !'));
     }
 
+    if (req.body.username.length < 7 || req.body.username.length > 20) {
+        return next(
+            errorHandler(400, 'Username must be between 7 and 20 characters')
+        );
+    }
+    if (req.body.username.includes(' ')) {
+        return next(errorHandler(400, 'Username cannot contain spaces'));
+    }
+    if (req.body.username !== req.body.username.toLowerCase()) {
+        return next(errorHandler(400, 'Username must be lowercase'));
+    }
+    if (!req.body.username.match(/^[a-zA-Z0-9]+$/)) {
+        return next(
+            errorHandler(400, 'Username can only contain letters and numbers')
+        );
+    }
+
+    if (password.length < 6) {
+        return next(errorHandler(400, 'Password must be at least 6 characters'));
+    }
+    
     const hashedPassword = bcryptjs.hashSync(password, 10); // Hash the password befor save it in the database
+
+
 
     const user = await User.findOne({ email });
     if (user) {
-        next(errorHandler(400, 'Email already exists.'));    
+        next(errorHandler(400, 'Email already exists.'));
     }
     else {
         const newUser = new User({ // Create a new user object
