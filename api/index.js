@@ -4,9 +4,12 @@ import dotenv from 'dotenv';
 import userRoutes from './routes/user.route.js';
 import authRoutes from './routes/auth.route.js';
 import path from 'path';
+import cookieParser from 'cookie-parser';
+
 const app = express();
 
 app.use(express.json()); // Parse JSON bodies
+app.use(cookieParser()); // Parse cookies, extract the token from the cookie
 
 dotenv.config(); // Load .env file
 
