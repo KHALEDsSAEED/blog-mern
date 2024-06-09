@@ -2,9 +2,8 @@ import React from 'react'
 
 export default function About() {
     return (
-        <>
-            <div>About</div>
-            <h1>khaleddd</h1>
-        </>
+        <div className="">about</div>
     )
 }
+
+//04:16
