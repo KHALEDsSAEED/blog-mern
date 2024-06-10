@@ -13,10 +13,12 @@ import {
 import { useDispatch } from "react-redux";
 import { Toast } from "flowbite-react";
 import { HiCheck, HiOutlineExclamationCircle, HiX } from "react-icons/hi";
+import { Link } from "react-router-dom";
+
 
 
 export default function DashProfile() {
-    const { currentUser, error } = useSelector(state => state.user);
+    const { currentUser, error, loading } = useSelector(state => state.user);
     const [imageFile, setImageFile] = useState(null);
     const [imageFileURL, setImageFileURL] = useState(null);
     const [imageFileUploadingProgress, setImageFileUploadingProgress] = useState(null); // progress percentage
@@ -257,7 +259,15 @@ export default function DashProfile() {
                     onChange={handleChange}
                 />
 
-                <Button type="submit" outline gradientDuoTone='purpleToBlue'>Update</Button>
+                <Button type="submit" outline gradientDuoTone='purpleToBlue' disabled={loading || imageFileUploading}>
+                    {loading ? 'Loading...' : 'Update'}
+                </Button>
+
+                {currentUser.isAdmin && (
+                    <Link to={'/create-post'}>
+                        <Button type='button' gradientDuoTone='purpleToPink' outline className="w-full">Create New Post</Button>
+                    </Link>
+                )}
 
             </form>
             <div className="text-red-500 flex justify-between mt-5">
