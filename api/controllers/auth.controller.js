@@ -76,7 +76,7 @@ export const signin = async (req, res, next) => {
 
         const token = jwt.sign( // Create a token
             {
-                id: validUser._id // Add the user id to the token payload
+                id: validUser._id, isAdmin:validUser.isAdmin // Add the user id to the token payload and isAdmin
             },
             process.env.JWT_SECRET, // Add the secret key to the token
         );
@@ -101,7 +101,7 @@ export const google = async (req, res, next) => {
         if (user) {
             const token = jwt.sign( // Create a token
                 {
-                    id: user._id // Add the user id to the token payload
+                    id: user._id, isAdmin: user.isAdmin // Add the user id to the token payload
                 },
                 process.env.JWT_SECRET, // Add the secret key to the token
             );
@@ -122,7 +122,7 @@ export const google = async (req, res, next) => {
             await newUser.save(); // Save the user object in the database
             const token = jwt.sign( // Create a token
                 {
-                    id: newUser._id // Add the user id to the token payload
+                    id: newUser._id, isAdmin: newUser.isAdmin // Add the user id to the token payload
                 },
                 process.env.JWT_SECRET, // Add the secret key to the token
             );

@@ -13,7 +13,6 @@ import {
 import { useDispatch } from "react-redux";
 import { Toast } from "flowbite-react";
 import { HiCheck, HiOutlineExclamationCircle, HiX } from "react-icons/hi";
-import { set } from "mongoose";
 
 
 export default function DashProfile() {
@@ -262,8 +261,8 @@ export default function DashProfile() {
 
             </form>
             <div className="text-red-500 flex justify-between mt-5">
-                <span onClick={() => setShowModal(true)} className="cursor-pointer">Delete Account</span>
-                <span className="cursor-pointer" onClick={handleSignout}>sign Out</span>
+                <span onClick={() => setShowModal(true)} className="cursor-pointer hover:scale-105">Delete Account</span>
+                <span className="cursor-pointer hover:scale-105" onClick={handleSignout}>sign Out</span>
             </div>
 
             {showToast && (
