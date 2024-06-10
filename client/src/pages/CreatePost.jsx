@@ -19,6 +19,10 @@ export default function () {
     const [imageUploadProgress, setImageUploadProgress] = useState(null);
     const [imageUploadError, setImageUploadError] = useState(null);
     const [formData, setFormData] = useState({});
+    const [publichError, setPublishError] = useState(null);
+
+    const navigate = useNavigate();
+
 
     const handleUpdloadImage = async () => {
         try {
@@ -57,13 +61,42 @@ export default function () {
         }
     };
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const res = await fetch('api/post/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                setPublishError(data.message);
+                return;
+            }
+            if (res.ok) {
+                setPublishError(null);
+                navigate(`/post/${data.slug}`);
+            }
+        }
+        catch (error) {
+            setPublishError('Post creation failed');
+        }
+    }
+
     return (
         <div className='p-3 max-w-3xl mx-auto min-h-screen'>
             <h1 className='text-center text-3xl my-7 font-semibold'>Create a post</h1>
-            <form className='flex flex-col gap-4'>
+            <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
                 <div className="flex flex-col gap-4 sm:flex-row justify-between">
-                    <TextInput className='flex-1' type='text' placeholder='title' required id='title' />
-                    <Select>
+                    <TextInput className='flex-1' type='text' placeholder='title' required id='title' onChange={
+                        (e) => setFormData({ ...formData, title: e.target.value })
+                    } />
+                    <Select onChange={(e) => {
+                        setFormData({ ...formData, category: e.target.value })
+                    }}>
                         <option value='uncategorized'>Select a category</option>
                         <option value='javascript'> JavaScript</option>
                         <option value='reactjs'>React.JS</option>
@@ -72,10 +105,10 @@ export default function () {
                 </div>
                 <div className="flex gap-4 items-start justify-between border-4 border-dotted p-3 border-teal-500">
                     <div className=" flex-col w-[75%]">
-                    <FileInput type='file' accept='image/*'  onChange={(e) => {
-                        setFile(e.target.files[0]);
-                    }} />
-                    {formData.image && (<img src={formData.image} alt='post' className=' mt-2 w-full h-64 object-contain border-2 border-teal-300' />)}
+                        <FileInput type='file' accept='image/*' onChange={(e) => {
+                            setFile(e.target.files[0]);
+                        }} />
+                        {formData.image && (<img src={formData.image} alt='post' className=' mt-2 w-full h-64 object-contain border-2 border-teal-300' />)}
                     </div>
 
                     <Button onClick={handleUpdloadImage} disabled={imageUploadProgress} type='button' outline gradientDuoTone='purpleToBlue' size='sm'>
@@ -84,9 +117,11 @@ export default function () {
                 </div>
 
                 {imageUploadError && <Alert color='failure'>{imageUploadError}</Alert>}
-                <ReactQuill theme="snow" placeholder='Write something...' className=' h-60 mb-12' />
+                <ReactQuill theme="snow" placeholder='Write something...' className=' h-60 mb-12' onChange={
+                    (value) => setFormData({ ...formData, content: value })
+                } />
                 <Button type='submit' className=' mb-3' outline gradientDuoTone='purpleToPink'>Publish</Button>
-
+                {publichError && <Alert color='failure'>{publichError}</Alert>}
             </form>
         </div>
     )
