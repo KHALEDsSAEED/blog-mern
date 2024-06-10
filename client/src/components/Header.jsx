@@ -6,6 +6,7 @@ import { FaMoon, FaSun } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
 import { HiLogout, HiViewGrid } from "react-icons/hi";
 import { toggleTheme } from '../redux/theme/themeSlice';
+import { signoutSuccess } from '../redux/user/userSlice';
 
 
 export default function Header() {
@@ -13,6 +14,25 @@ export default function Header() {
     const dispatch = useDispatch();
     const { currentUser } = useSelector((state) => state.user);
     const { theme } = useSelector((state) => state.theme);
+
+    const handleSignout = async () => {
+        try {
+            const res = await fetch('api/user/signout', {
+                method: 'POST',
+            });
+            const data = await res.json();
+            if (res.ok) {
+                dispatch(signoutSuccess());
+
+            }
+            else {
+                console.log(data.message);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <Navbar className='border-b-2'>
             <Link to='/' className='self-center whitespace-nowrap
@@ -46,7 +66,7 @@ export default function Header() {
 
                 {currentUser ? (
                     <Dropdown arrowIcon={false} inline label={
-                        <Avatar alt='user' img={currentUser.profilePicture} rounded />
+                        <Avatar alt='user' img={currentUser.profilePicture} rounded bordered />
                     }>
                         <Dropdown.Header>
                             <span className='block text-lg'>@{currentUser.username}</span>
@@ -56,7 +76,7 @@ export default function Header() {
                             <Dropdown.Item className='text-lg' icon={HiViewGrid}>Profile</Dropdown.Item>
                         </Link>
                         <Dropdown.Divider />
-                        <Dropdown.Item className='text-lg' icon={HiLogout}>Sign Out</Dropdown.Item>
+                        <Dropdown.Item className='text-lg' onClick={handleSignout} icon={HiLogout}>Sign Out</Dropdown.Item>
 
                     </Dropdown>
                 ) : (

@@ -8,7 +8,7 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import {
     updateFailure, updateStart, updateSuccess,
-    deleteUserStart, deleteUserFailure, deleteUserSuccess
+    deleteUserStart, deleteUserFailure, deleteUserSuccess, signoutSuccess
 } from "../redux/user/userSlice";
 import { useDispatch } from "react-redux";
 import { Toast } from "flowbite-react";
@@ -170,6 +170,24 @@ export default function DashProfile() {
         }
     };
 
+    const handleSignout = async () => {
+        try {
+            const res = await fetch('api/user/signout', {
+                method: 'POST',
+            });
+            const data = await res.json();
+            if (res.ok) {
+                dispatch(signoutSuccess());
+
+            }
+            else {
+                console.log(data.message);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
 
 
 
@@ -245,7 +263,7 @@ export default function DashProfile() {
             </form>
             <div className="text-red-500 flex justify-between mt-5">
                 <span onClick={() => setShowModal(true)} className="cursor-pointer">Delete Account</span>
-                <span className="cursor-pointer">sign Out</span>
+                <span className="cursor-pointer" onClick={handleSignout}>sign Out</span>
             </div>
 
             {showToast && (
