@@ -21,7 +21,7 @@ export default function () {
                     <FileInput type='file' accept='image/*' />
                     <Button type='button' outline gradientDuoTone='purpleToBlue' size='sm'>Upload Image</Button>
                 </div>
-                <ReactQuill theme="snow" placeholder='Write something...' className=' h-60 mb-12' required />
+                <ReactQuill theme="snow" placeholder='Write something...' className=' h-60 mb-12' />
                 <Button type='submit' outline gradientDuoTone='purpleToPink'>Publish</Button>
 
             </form>

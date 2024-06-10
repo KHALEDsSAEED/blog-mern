@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import userRoutes from './routes/user.route.js';
 import authRoutes from './routes/auth.route.js';
+import postRoutes from './routes/post.route.js';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 
@@ -30,6 +31,8 @@ app.listen(3000, () => {
 app.use('/api/user', userRoutes); // Use the userRoutes for the '/api/user/test' endpoint
 
 app.use('/api/auth', authRoutes); // Use the authRoutes for the '/api/auth/signup' endpoint
+
+app.use('/api/post', postRoutes); // Use the postRoutes for the '/api/post/create' endpoint
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
