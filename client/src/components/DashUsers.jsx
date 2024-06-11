@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { FaCheck, FaTimes } from "react-icons/fa";
+import { set } from "mongoose";
 
 
 export default function DashUsers() {
@@ -12,6 +13,7 @@ export default function DashUsers() {
     const [showMore, setShowMore] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const [userIdToDelete, setUserIdToDelete] = useState('');
+    const [userNameToDelete, setUserNameToDelete] = useState('');
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -43,6 +45,21 @@ export default function DashUsers() {
         }
     };
 
+    const handleDeleteUser = async () => {
+        try {
+            const res = await fetch(`/api/user/delete/${userIdToDelete}`, {
+                method: 'DELETE',
+            });
+            const data = await res.json();
+            if (res.ok) {
+                setUsers(users.filter(user => user._id !== userIdToDelete));
+                setShowModal(false);
+            }
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
+
 
     return (
         <div className="table-auto overflow-x-scroll md:mx-auto p-3 w-full 
@@ -61,6 +78,7 @@ export default function DashUsers() {
                         </Table.Head>
                         {users.map(
                             (user) => (
+
                                 <Table.Body className="divide-y" key={user._id}>
                                     <Table.Row className=" bg-white dark:bg-gray-800 dark:border-gray-700">
                                         <Table.Cell>{new Date(user.createdAt).toLocaleDateString()}</Table.Cell>
@@ -76,7 +94,8 @@ export default function DashUsers() {
                                         <Table.Cell>
                                             <span onClick={() => {
                                                 setShowModal(true);
-                                                // setUserIdToDelete(user._id);
+                                                setUserIdToDelete(user._id);
+                                                setUserNameToDelete(user.username);
                                             }}
                                                 className="font-medium text-red-500 hover:underline hover:cursor-pointer">
                                                 Delete
@@ -96,12 +115,12 @@ export default function DashUsers() {
                 </>
             ) : (<p>No users found</p>)}
 
-            {/* <Modal show={showModal} popup size='lg' onClose={() => setShowModal(false)}>
+            <Modal show={showModal} popup size='lg' onClose={() => setShowModal(false)}>
                 <Modal.Header />
                 <Modal.Body>
                     <div className="text-center">
                         <HiOutlineExclamationCircle size={100} className="h-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto" />
-                        <h3 className="mb-5 text-lg text-gray-500 dark:text-gray-400">Are you sure you want to <b>DELETE</b> this user?</h3>
+                        <h3 className="mb-5 text-lg text-gray-500 dark:text-gray-400">Are you sure you want to <span className="text-red-500">DELETE</span> <b> "{userNameToDelete}"</b>?</h3>
                         <div className="flex justify-evenly">
                             <Button color='failure' onClick={handleDeleteUser}>Yes, I'm sure</Button>
                             <Button color='success' onClick={() => setShowModal(false)}>No, cancel</Button>
@@ -109,7 +128,7 @@ export default function DashUsers() {
 
                     </div>
                 </Modal.Body>
-            </Modal> */}
+            </Modal>
 
         </div >
     )
