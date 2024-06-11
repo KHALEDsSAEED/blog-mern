@@ -3,8 +3,6 @@ import { useEffect, useState } from "react"
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
-import { set } from "mongoose";
-
 
 
 export default function DashPosts() {
@@ -12,7 +10,7 @@ export default function DashPosts() {
     const [userPosts, setUserPosts] = useState([]);
     const [showMore, setShowMore] = useState(true);
     const [showModal, setShowModal] = useState(false);
-    const [postidToDelete, setPostIdToDelete] = useState('');
+    const [postIdToDelete, setPostIdToDelete] = useState('');
 
     // console.log(userPosts);
 
@@ -48,19 +46,19 @@ export default function DashPosts() {
 
     const handleDeletePost = async () => {
         setShowModal(false);
-        try{
-            const res= await fetch(`/api/post/deletepost/${postidToDelete}/${currentUser._id}`, {
+        try {
+            const res = await fetch(`/api/post/deletepost/${postIdToDelete}/${currentUser._id}`, {
                 method: 'DELETE',
             });
             const data = await res.json();
-            if(!res.ok){
+            if (!res.ok) {
                 console.log(data.message);
             }
-            else{
-                setUserPosts((prev) => prev.filter((post) => post._id !== postidToDelete)); // Remove the post from the state
+            else {
+                setUserPosts((prev) => prev.filter((post) => post._id !== postIdToDelete)); // Remove the post from the state
             }
         }
-        catch(error){
+        catch (error) {
             console.log(error.message);
         }
     };
@@ -82,7 +80,7 @@ export default function DashPosts() {
                         </Table.Head>
                         {userPosts.map(
                             (post) => (
-                                <Table.Body className="divide-y">
+                                <Table.Body className="divide-y" key={post._id}>
                                     <Table.Row className=" bg-white dark:bg-gray-800 dark:border-gray-700">
                                         <Table.Cell>{new Date(post.updatedAt).toLocaleDateString()}</Table.Cell>
                                         <Table.Cell>
@@ -116,7 +114,7 @@ export default function DashPosts() {
                         )}
                     </Table>
                     {showMore && (
-                        <button onChange={handleShowMore}
+                        <button onClick={handleShowMore}
                             className="w-full text-teal-500 self-center text-sm py-7 hover:cursor-pointer hover:underline">
                             Show more
                         </button>
