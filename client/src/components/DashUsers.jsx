@@ -1,10 +1,9 @@
-import { Table, Button, Modal } from "flowbite-react";
+import { Table, Button, Modal, Spinner } from "flowbite-react";
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { FaCheck, FaTimes } from "react-icons/fa";
-import { set } from "mongoose";
 
 
 export default function DashUsers() {
@@ -14,14 +13,17 @@ export default function DashUsers() {
     const [showModal, setShowModal] = useState(false);
     const [userIdToDelete, setUserIdToDelete] = useState('');
     const [userNameToDelete, setUserNameToDelete] = useState('');
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchUsers = async () => {
             try {
+                setLoading(true);
                 const res = await fetch(`/api/user/getusers`);
                 const data = await res.json();
                 if (res.ok) {
                     setUsers(data.users);
+                    setLoading(false);
                     if (data.users.length < 9) setShowMore(false);
                 }
             } catch (error) {
@@ -59,6 +61,12 @@ export default function DashUsers() {
             console.log(error.message);
         }
     };
+
+    if (loading) return (
+        <div className="flex justify-center items-center min-h-screen">
+            <Spinner size='xl' />
+        </div>
+    )
 
 
     return (
