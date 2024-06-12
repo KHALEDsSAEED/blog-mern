@@ -65,7 +65,7 @@ export default function Header() {
                 </Button>
 
                 {currentUser ? (
-                    <Dropdown arrowIcon={false} inline label={
+                    <Dropdown className=' z-20' arrowIcon={false} inline label={
                         <Avatar alt='user' img={currentUser.profilePicture} rounded bordered />
                     }>
                         <Dropdown.Header>

@@ -11,8 +11,11 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.3",
+    "clsx": "^2.1.1",
     "firebase": "^10.12.2",
     "flowbite-react": "^0.8.0",
+    "framer-motion": "^11.2.10",
+    "lottie-react": "^2.4.0",
     "react": "^18.2.0",
     "react-circular-progressbar": "^2.1.0",
     "react-dom": "^18.2.0",
@@ -20,7 +23,8 @@
     "react-quill": "^2.0.0",
     "react-redux": "^9.1.0",
     "react-router-dom": "^6.22.3",
-    "redux-persist": "^6.0.0"
+    "redux-persist": "^6.0.0",
+    "tailwind-merge": "^2.3.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
