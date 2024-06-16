@@ -82,6 +82,7 @@ export default function DashPosts() {
                 <>
                     <Table hoverable className="shadown-md">
                         <Table.Head>
+                            <Table.HeadCell>#</Table.HeadCell>
                             <Table.HeadCell>Date updated</Table.HeadCell>
                             <Table.HeadCell>Post Image</Table.HeadCell>
                             <Table.HeadCell>Post Title</Table.HeadCell>
@@ -90,9 +91,10 @@ export default function DashPosts() {
                             <Table.HeadCell><span>Edit</span></Table.HeadCell>
                         </Table.Head>
                         {userPosts.map(
-                            (post) => (
+                            (post,i) => (
                                 <Table.Body className="divide-y" key={post._id}>
                                     <Table.Row className=" bg-white dark:bg-gray-800 dark:border-gray-700">
+                                        <Table.Cell>{i+1}</Table.Cell>
                                         <Table.Cell>{new Date(post.updatedAt).toLocaleDateString()}</Table.Cell>
                                         <Table.Cell>
                                             <Link to={`/post/${post.slug}`}>

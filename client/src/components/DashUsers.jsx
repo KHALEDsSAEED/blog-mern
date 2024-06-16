@@ -77,6 +77,7 @@ export default function DashUsers() {
                 <>
                     <Table hoverable className="shadown-md">
                         <Table.Head>
+                            <Table.HeadCell>#</Table.HeadCell>
                             <Table.HeadCell>Date Created</Table.HeadCell>
                             <Table.HeadCell>User Image</Table.HeadCell>
                             <Table.HeadCell>User Name</Table.HeadCell>
@@ -85,10 +86,11 @@ export default function DashUsers() {
                             <Table.HeadCell>Delete</Table.HeadCell>
                         </Table.Head>
                         {users.map(
-                            (user) => (
+                            (user,i) => (
 
                                 <Table.Body className="divide-y" key={user._id}>
                                     <Table.Row className=" bg-white dark:bg-gray-800 dark:border-gray-700">
+                                        <Table.Cell>{i+1}</Table.Cell>
                                         <Table.Cell>{new Date(user.createdAt).toLocaleDateString()}</Table.Cell>
                                         <Table.Cell>
                                             <img src={user.profilePicture} alt={user.username} className=" w-11 h-11 rounded-full object-cover bg-gray-200" />
