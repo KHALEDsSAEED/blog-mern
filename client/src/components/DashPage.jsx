@@ -6,8 +6,9 @@ import {
     HiDocumentText,
     HiOutlineUserGroup,
 } from 'react-icons/hi';
-import { Button, Table } from 'flowbite-react';
+import { Button, Table, Spinner} from 'flowbite-react';
 import { Link } from 'react-router-dom';
+
 
 
 export default function DashPage() {
@@ -20,17 +21,21 @@ export default function DashPage() {
     const [lastMonthUsers, setLastMonthUsers] = useState(0);
     const [lastMonthPosts, setLastMonthPosts] = useState(0);
     const [lastMonthComments, setLastMonthComments] = useState(0);
+    const [loading, setLoading] = useState(true);
     const { currentUser } = useSelector((state) => state.user);
 
     useEffect(() => {
+        setLoading(true);
         const fetchUsers = async () => {
             try {
+
                 const res = await fetch('/api/user/getusers?limit=5');
                 const data = await res.json();
                 if (res.ok) {
                     setUsers(data.users);
                     setTotalUsers(data.totalUsers);
                     setLastMonthUsers(data.lastMonthUsers);
+                    setLoading(false);
                 }
             } catch (error) {
                 console.log(error.message);
@@ -44,6 +49,7 @@ export default function DashPage() {
                     setPosts(data.posts);
                     setTotalPosts(data.totalPosts);
                     setLastMonthPosts(data.lastMonthPosts);
+                    setLoading(false);
                 }
             } catch (error) {
                 console.log(error.message);
@@ -57,6 +63,7 @@ export default function DashPage() {
                     setComments(data.comments);
                     setTotalComments(data.totalComments);
                     setLastMonthComments(data.lastMonthComments);
+                    setLoading(false);
                 }
             } catch (error) {
                 console.log(error.message);
@@ -68,6 +75,12 @@ export default function DashPage() {
             fetchComments();
         }
     }, [currentUser]);
+
+    if (loading) return (
+        <div className="flex justify-center items-center min-h-screen">
+            <Spinner size='xl' />
+        </div>
+    )
 
 
     return (
