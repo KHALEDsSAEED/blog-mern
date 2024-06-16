@@ -5,8 +5,8 @@ import userRoutes from './routes/user.route.js';
 import authRoutes from './routes/auth.route.js';
 import postRoutes from './routes/post.route.js';
 import commentRoutes from './routes/comment.route.js';
-
 import cookieParser from 'cookie-parser';
+import path from 'path';
 
 const app = express();
 
@@ -23,6 +23,7 @@ mongoose
         console.log('Error: ', error);
     });
 
+const __dirname = path.resolve(); // Define the path to the root directory
 
 
 app.listen(3000, () => {
@@ -36,6 +37,12 @@ app.use('/api/auth', authRoutes); // Use the authRoutes for the '/api/auth/signu
 app.use('/api/post', postRoutes); // Use the postRoutes for the '/api/post/create' endpoint
 
 app.use('/api/comment', commentRoutes); // Use the commentRoutes for the '/api/comment/create' endpoint
+
+app.use(express.static(path.join(__dirname, '/client/dist'))); // Serve the static files from the React app
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+});
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
