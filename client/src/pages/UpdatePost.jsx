@@ -24,7 +24,7 @@ export default function UpdatePost() {
     const [publichError, setPublishError] = useState(null);
     const { postId } = useParams();
 
-    const currentUser = useSelector((state) => state.user.currentUser);
+    const {currentUser} = useSelector((state) => state.user);
 
     //console.log(postId);
 
@@ -94,8 +94,11 @@ export default function UpdatePost() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log('Post ID:', postId);
+        console.log('User ID:', currentUser._id);
+
         try {
-            const res = await fetch(`/api/post/updatepost/${formData._id}/${currentUser._id}`, {
+            const res = await fetch(`/api/post/updatepost/${postId}/${currentUser._id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

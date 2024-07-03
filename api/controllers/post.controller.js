@@ -83,11 +83,6 @@ export const updatepost = async (req, res, next) => {
         return next(errorHandler(403, 'You are not allowed to update this post'));
     }
     try {
-        const slug = req.body.title
-            .split(' ')
-            .join('-')
-            .toLowerCase()
-            .replace(/[^a-zA-Z0-9-]/g, '');
         const updatedPost = await Post.findByIdAndUpdate(
             req.params.postId,
             {
@@ -96,7 +91,6 @@ export const updatepost = async (req, res, next) => {
                     content: req.body.content,
                     category: req.body.category,
                     image: req.body.image,
-                    slug,
                 },
             },
             { new: true }
