@@ -4,9 +4,7 @@ import { Button, Label, Spinner, TextInput, Alert } from 'flowbite-react'
 import { signInStart, signInFailure, signInSuccess } from '../redux/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import OAuth from '../components/OAuth';
-import { getAuth, sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
-import { HiEye } from 'react-icons/hi';
-
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 
 
 
@@ -93,7 +91,7 @@ export default function Signin() {
                     <Link to='/' className='font-bold dark:text-white text-4xl'>
                         <span className='px-2 mr-1 py-1 bg-gradient-to-r text-white
                         from-indigo-500 via-purple-500 to-pink-500 rounded-lg'>
-                            Khaled's
+                            Dev's
                         </span>
                         Blog
                     </Link>

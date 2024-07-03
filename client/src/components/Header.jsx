@@ -55,34 +55,35 @@ export default function Header() {
 
 
     return (
-        <Navbar className='border-b-2'>
+        <Navbar className='border-b-2 sticky top-0 backdrop-blur-2xl z-30'>
             <Link to='/' className='self-center whitespace-nowrap
             text-sm sm:text-xl font-semibold  dark:text-white'>
                 <span className='px-2 mr-1 py-1 bg-gradient-to-r text-white
                 from-indigo-500 via-purple-500 to-pink-500 rounded-lg'>
-                    Khaled's
+                    Dev's
                 </span>
                 Blog
             </Link>
-
-            <form onSubmit={handleSubmit}>
-                <TextInput
-                    type='text'
-                    placeholder='Search...'
-                    rightIcon={AiOutlineSearch}
-                    className='hidden lg:inline'
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />
-            </form>
-            <Button className='w-12 h-10 lg:hidden' color='gray' pill>
-                <AiOutlineSearch />
-            </Button>
+            <div className="hidden lg:inline">
+                <form onSubmit={handleSubmit}>
+                    <TextInput
+                        type='text'
+                        placeholder='Search...'
+                        rightIcon={AiOutlineSearch}
+                        className='hidden lg:inline'
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                </form>
+                <Button className='w-12 h-10 lg:hidden' color='gray' pill>
+                    <AiOutlineSearch />
+                </Button>
+            </div>
 
 
 
             <div className='flex gap-2 md:order-2'>
-                <Button className='w-12 h-10 hidden sm:inline' gradientDuoTone='tealToLime' outline color='grey' pill onClick={() => {
+                <Button className='w-12 h-10 inline' gradientDuoTone='tealToLime' outline color='grey' pill onClick={() => {
                     dispatch(toggleTheme());
                 }}>
                     {theme === 'light' ? <FaMoon /> : <FaSun />}
@@ -113,7 +114,7 @@ export default function Header() {
                 <Navbar.Toggle />
             </div>
 
-            <Navbar.Collapse>
+            <Navbar.Collapse >
                 <Navbar.Link active={path === "/"} as={'div'}>
                     <Link to='/'>
                         Home
@@ -124,9 +125,10 @@ export default function Header() {
                         About
                     </Link>
                 </Navbar.Link>
-                <Navbar.Link active={path === "/projects"} as={'div'}>
-                    <Link to='/projects'>
-                        Projects
+                <Navbar.Link active={path === "/search"} as={'div'} className='lg:hidden'>
+                    <Link
+                        to='/search'>
+                        Search
                     </Link>
                 </Navbar.Link>
             </Navbar.Collapse>

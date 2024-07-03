@@ -5,7 +5,6 @@ import About from './pages/About'
 import Signin from './pages/Signin'
 import SignUp from './pages/signup.jsx' 
 import Dashboard from './pages/Dashboard'
-import Projects from './pages/Projects'
 import Header from './components/Header.jsx'
 import Footer from './components/Footer.jsx'
 import PrivateRoutes from './components/PrivateRoutes.jsx'
@@ -35,7 +34,6 @@ export default function App() {
           <Route path="/create-post" element={<CreatePost />} />
           <Route path="/update-post/:postId" element={<UpdatePost />} />
         </Route>
-        <Route path="/projects" element={<Projects />} />
         <Route path="/post/:postSlug" element={<PostPage />} />
       </Routes>
       <Footer />

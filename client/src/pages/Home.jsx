@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import PostCard from '../components/PostCard';
-import CallToAction from '../components/CallToAction';
+import FAQ from '../components/FAQ';
 
 export default function Home() {
     const { currentUser } = useSelector((state) => state.user);
@@ -51,8 +51,9 @@ export default function Home() {
 
             </div>
             {/*================================================================================*/}
-            <div className="p-3 mx-6">
-                <CallToAction />
+
+            <div className=" m-14">
+                <FAQ />
             </div>
 
             <div className='max-w-6xl mx-auto p-3 flex flex-col gap-8 py-7'>
